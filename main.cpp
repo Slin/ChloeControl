@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "CLCNetwork.h"
 
 int main()
@@ -11,7 +12,7 @@ int main()
 	while(i < 10000)
 	{
 		std::string inputData("up:");
-		inputData += std::to_string(0.1f);
+		inputData += std::to_string(1.0f);
 		network.SendString(inputData);
 
 		network.Update();
