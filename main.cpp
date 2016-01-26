@@ -1,27 +1,44 @@
 #include <iostream>
 #include <cmath>
 #include "CLCNetwork.h"
+#include "CLCInput.h"
 
 int main()
 {
 	CLC::Network network;
+	CLC::Input input;
 
-	network.SendString(std::string("start"));
+	float speed = 0.0f;
 
-	int i = 0;
-	while(i < 10000)
+	while(!input.GetButton(CLC::Input::Button::Square))
 	{
-		std::string inputData("up:");
-		inputData += std::to_string(1.0f);
-		network.SendString(inputData);
+		while(!input.GetButton(CLC::Input::Button::Triangle) && !input.GetButton(CLC::Input::Button::Square))
+		{
+			input.Update();
+		}
 
+		network.SendString(std::string("start"));
+
+		while(!input.GetButton(CLC::Input::Button::X) && !input.GetButton(CLC::Input::Button::Square))
+		{
+			input.Update();
+
+			speed = input.GetTrigger(CLC::Input::AxisControls::RightTrigger)*1.0f;
+
+			std::string inputData("up:");
+			inputData += std::to_string(speed);
+			network.SendString(inputData);
+
+			std::cout << inputData << std::endl;
+
+			network.Update();
+			usleep(1000);
+		}
+
+		speed = 0.0f;
+		network.SendString(std::string("stop"));
 		network.Update();
-		i++;
-		usleep(1000);
 	}
-
-	network.SendString(std::string("stop"));
-	network.Update();
 
 	return 0;
 }
