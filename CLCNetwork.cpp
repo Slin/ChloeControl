@@ -94,12 +94,31 @@ namespace CLC
 			switch(_event.type)
 			{
 				case ENET_EVENT_TYPE_RECEIVE:
+				{
+					std::string packageData(reinterpret_cast<char *>(_event.packet->data));
 					enet_packet_destroy(_event.packet);
+
+					if(packageData.find("currentorientation:") == 0)
+					{
+						std::string values = packageData.substr(19);
+						float x = std::stof(values.substr(0, values.find(",")));
+						values = values.substr(values.find(",")+1);
+						float y = std::stof(values.substr(0, values.find(",")));
+						values = values.substr(values.find(",")+1);
+						float z = std::stof(values.substr(0, values.find(",")));
+
+						orientation[0] = x;
+						orientation[1] = y;
+						orientation[2] = z;
+					}
 					break;
+				}
+
 				case ENET_EVENT_TYPE_DISCONNECT:
 					std::cout << "Disconnected from chloe.local. Kicked from server!" << std::endl;
 					_isConnected = false;
 					break;
+
 				default:
 					break;
 			}

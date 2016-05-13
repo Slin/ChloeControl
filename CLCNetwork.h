@@ -19,6 +19,8 @@ namespace CLC
 		void Update();
 		void SendString(const std::string &string);
 
+		float orientation[3];
+
 	private:
 		ENetHost *_client;
 		ENetEvent _event;

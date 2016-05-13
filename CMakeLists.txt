@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 
 add_subdirectory("vendor/enet")
+#add_subdirectory("vendor/sfml")
 
 project(ChloeControl)
 
@@ -24,7 +25,7 @@ if(APPLE)
         set(LINK_LIBRARIES ${FOUNDATION_LIBRARY} ${IOKIT_LIBRARY})
 endif()
 
-set(LINK_LIBRARIES ${LINK_LIBRARIES} enet)
+set(LINK_LIBRARIES ${LINK_LIBRARIES} enet sfml-window)
 
 add_executable(ChloeControl ${SOURCE_FILES})
 target_link_libraries(ChloeControl ${LINK_LIBRARIES})
